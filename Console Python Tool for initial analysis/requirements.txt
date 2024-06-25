@@ -1,0 +1,7 @@
+matplotlib==3.8.3
+numpy==2.0.0
+pandas==2.2.2
+PyPDF2==3.0.1
+reportlab==4.2.0
+seaborn==0.13.2
+vr_idt==0.0.5
