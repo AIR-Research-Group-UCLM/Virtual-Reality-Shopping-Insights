@@ -57,236 +57,134 @@ To run the application, you can do it inside the Meta Quest headset if you insta
 
 In the folder "Console Python Tool for initial analysis" you can find another README.md file that will guide you to the use of such tool for analysing the data recorded.
 
-## Files generated during execution 
-SESSION_YYYY-MM-DD_hh_mm_ss
-The files generated during execution are stored in the working directory. If the application is run directly on the headset, we can find it within the shared internal storage of the Meta Quest headset, in the subdirectory: "/sdcard/Android/data/com.<companyName>.XXX/". If you did not change the original values from the APK in this repository it will be: "/Android/data/com.AIR.VRSI/VRSI/"
-Starting from this directory, the following file structure is generated (assuming that UserName here is "TestUser"). Please note that the generic date formatting YYYY-MM-DD-hh-mm-ss does not mean that there are the same for every file in the example structure below:
-		
-```text
-PLAYERS_JSONs/
-├── ETPlayerDataYYYY-MM-DD-hh-mm-ss
-├── PositionPlayerDataYYYY-MM-DD-hh-mm-ss
-├── ETPlayerDataYYYY-MM-DD-hh-mm-ss
-├── PositionPlayerDataYYYY-MM-DD-hh-mm-ss
-...
-TestUser/
-├── SESSION_YYYY-MM-DD_hh_mm_ss/
-    ├── EyeTrackerData-AOIBigEnvironment.csv
-    ├── EyeTrackerData-ProductsBigEnvironment.csv
-    ├── HeadHandsDataBigEnvironment.csv
-    ├── ProductInteractionDataBigEnvironment.csv
-    ├── ProductReleasesBigEnvironment.csv
-    ├── ShelvesDataBigEnvironment.csv
-    ├── ShoppingCartDataBigEnvironment.csv
-    ├── TeleportDataBigEnvironment.csv
-    ├── TurningsBigEnvironment.csv
-├── SESSION_YYYY-MM-DD_hh_mm_ss/
-    ├── EyeTrackerData-AOIBigEnvironment.csv
-    ├── EyeTrackerData-ProductsBigEnvironment.csv
-    ├── HeadHandsDataBigEnvironment.csv
-    ...
-```
-Along with the Table 1 from our paper, we provide a brief description of each of the CSV files:
-
-### EyeTrackerData-AOIBigEnvironment.csv
-
-This file contains data captured from eye-tracking within a specified area of interest (AOI). 
-
-#### Fields:
-
--   **Frame**: The frame number of the recorded data since the start of the execution.
--   **Timestamp**: The exact time when the data was recorded in seconds sicne the start of the execution.
--   **Product/AOI**: The product or area of interest being observed.
--   **Section/Shelf**: Specific section or shelf where the product/AOI is located.
--   **EyeLeftPosition_x/y/z**: 3D coordinates of the left eye's position.
--   **EyeLeftRotation_x/y/z**: Rotation data of the left eye in 3D space.
--   **EyeRightPosition_x/y/z**: 3D coordinates of the right eye's position.
--   **EyeRightRotation_x/y/z**: Rotation data of the right eye in 3D space.
--   **HMD_x/y/z**: 3D coordinates of the head-mounted display's (HMD) position.
--   **RCHit_x/y/z**: 3D coordinates of the raycast hit position.
-
-### EyeTrackerData-ProductsBigEnvironment.csv
-
-This file contains eye-tracking data related to products being watched (detected by the raycast hits geenrated from the GameObjects representing the eyes). If enabled, eye tracking supported by Meta Quest Pro allows a precise tracking of the position and rotation of the eyes.
-
-#### Fields:
-
--   **Frame**: The frame number of the recorded data.
--   **Timestamp**: The exact time when the data was recorded.
--   **Product/AOI**: The product or area of interest being observed.
--   **Section/Shelf**: Specific section or shelf where the product/AOI is located.
--   **EyeLeftPosition_x/y/z**: 3D coordinates of the left eye's position.
--   **EyeLeftRotation_x/y/z**: Rotation data of the left eye in 3D space.
--   **EyeRightPosition_x/y/z**: 3D coordinates of the right eye's position.
--   **EyeRightRotation_x/y/z**: Rotation data of the right eye in 3D space.
--   **HMD_x/y/z**: 3D coordinates of the head-mounted display's (HMD) position.
--   **RCHit_x/y/z**: 3D coordinates of the raycast hit position.
-
-### HeadHandsDataBigEnvironment.csv
-
-This file records the position and rotation data of the head and hands within the virtual environment.
-
-#### Fields:
-
--   **Frame**: The frame number of the recorded data.
--   **Timestamp**: The exact time when the data was recorded.
--   **HMD_x/y/z**: 3D coordinates of the head-mounted display's (HMD) position.
--   **HMD_rot_x/y/z**: Rotation data of the HMD in 3D space.
--   **HandR_x/y/z**: 3D coordinates of the right hand's position.
--   **HandR_rot_x/y/z**: Rotation data of the right hand in 3D space.
--   **HandL_x/y/z**: 3D coordinates of the left hand's position.
--   **HandL_rot_x/y/z**: Rotation data of the left hand in 3D space.
--   **Velocity_HandR_x/y/z**: Velocity data of the right hand in 3D space.
--   **Velocity_HandL_x/y/z**: Velocity data of the left hand in 3D space.
--   **Distance**: Distance traveled.
-
-### ProductInteractionDataBigEnvironment.csv
-
-This file documents interactions with objects/products.
-
-#### Fields:
-
--   **Frame**: The frame number of the recorded data.
--   **Timestamp**: The exact time when the data was recorded.
--   **Object**: The object being interacted with.
--   **Section**: Specific section where the interaction took place.
--   **State**: The state of the object (e.g., grabbed, released).
--   **Position_x/y/z**: 3D coordinates of the object's position.
--   **Rotation_x/y/z**: Rotation data of the object in 3D space.
--   **Scale_x/y/z**: Scale data of the object.
--   **RightHand_State**: The state of the right hand during interaction according the Interactor-Interactable lifecycle from the Meta Interection SDK. It can be Select (the Interactor is interacting with an Interactable), Hover (the Interactor can interact with the best Interactable candidate), Normal or Disabled.
--   **LeftHand_State**: The state of the left hand during interaction. It can be Select (the Interactor is interacting with an Interactable), Hover (the Interactor can interact with the best Interactable candidate), Normal or Disabled.
-
-### ProductReleasesBigEnvironment.csv
-
-This file records data about product releases for those that are grabbed in first place.
-
-#### Fields:
-
--   **Frame**: The frame number of the recorded data.
--   **Timestamp**: The exact time when the data was recorded.
--   **Object**: The object being released.
--   **DurationUntilRelease**: Duration until the object was released.
--   **RightHand_State**: The state of the right hand at the time of release.
--   **LeftHand_State**: The state of the left hand at the time of release.
-
-### ShelvesDataBigEnvironment.csv
-
-This file contains data related to shelves withing the virtual environment's layout and areas of interest.
-
-#### Fields:
-
--   **Frame**: The frame number of the recorded data.
--   **Timestamp**: The exact time when the data was recorded.
--   **Shelf**: The shelf being observed or interacted with.
--   **AOI**: Area of interest on the shelf.
--   **HandR_x/y/z**: 3D coordinates of the right hand's position.
--   **HandR_rot_x/y/z**: Rotation data of the right hand in 3D space.
--   **HandL_x/y/z**: 3D coordinates of the left hand's position.
--   **HandL_rot_x/y/z**: Rotation data of the left hand in 3D space.
--   **Velocity_HandR_x/y/z**: Velocity data of the right hand in 3D space.
--   **Velocity_HandL_x/y/z**: Velocity data of the left hand in 3D space.
-
-### ShoppingCartDataBigEnvironment.csv
-
-This file documents actions related to a shopping cart.
-
-#### Fields:
-
--   **Frame**: The frame number of the recorded data.
--   **Timestamp**: The exact time when the data was recorded.
--   **Item**: The item being added or removed from the cart.
--   **Action**: The action taken (e.g., add, remove).
-
-### TeleportDataBigEnvironment.csv
-
-This file records teleportation data.
-
-#### Fields:
-
--   **Frame**: The frame number of the recorded data.
--   **Timestamp**: The exact time when the data was recorded.
--   **TPHotspot**: The teleportation hotspot used.
--   **HMD_x/z**: 3D coordinates of the head-mounted display's (HMD) position.
--   **Duration**: Duration of the teleportation.
--   **WasTP**: Indicates if a teleportation event occurred.
--   **ZOI**: Zone of interest related to the teleportation.
--   **Distance**: Distance traveled during teleportation.
--   **RightHand_State**: The state of the right hand during teleportation.
--   **LeftHand_State**: The state of the left hand during teleportation.
-
-### TurningsBigEnvironment.csv
-
-This file documents turnings (rotate the point of view of the user by a certain amount of degrees) within the virtual environment.
-
-#### Fields:
-
--   **Frame**: The frame number of the recorded data.
--   **Timestamp**: The exact time when the data was recorded.
--   **RightHand_State**: The state of the right hand during turning.
--   **LeftHand_State**: The state of the left hand during turning.
-
-### HeadHandsDataBigEnvironment_segmented.csv
-
-It includes new fields regarding the data being segmented in Zones of Interests (ZOIs).
-
-#### Fields:
-
--   **Frame**: The frame number of the recorded data.
--   **Timestamp**: The exact time when the data was recorded.
--   **HMD_x/y/z**: 3D coordinates of the head-mounted display's (HMD) position.
--   **HMD_rot_x/y/z**: Rotation data of the HMD in 3D space.
--   **HandR_x/y/z**: 3D coordinates of the right hand's position.
--   **HandR_rot_x/y/z**: Rotation data of the right hand in 3D space.
--   **HandL_x/y/z**: 3D coordinates of the left hand's position.
--   **HandL_rot_x/y/z**: Rotation data of the left hand in 3D space.
--   **Velocity_HandR_x/y/z**: Velocity data of the right hand in 3D space.
--   **Velocity_HandL_x/y/z**: Velocity data of the left hand in 3D space.
--   **Distance**: Distance traveled or distance between points.
--   **Zone**: The zone within the environment where the data was recorded (Start for the start of the applciation, Shelf, Adjacent, Near or Far).
--   **Status**: The status of the user regarding its movement in such frame (either Stop or Moving).
-
-Aditionally, two CSV with data derived are obtained from the analysis tool:
-
-### EyeTrackerData-AOIBigEnvironment_withFixations.csv
-
-It contains additonal fields regarding fixation and saccades of eyes:
-
-#### Fields:
-
--   **fixation**: Boolean or categorical data indicating whether a fixation occurred.
--   **fixation_start**: Timestamp indicating the start of a fixation.
--   **fixation_end**: Timestamp indicating the end of a fixation.
--   **fixation_duration**: Duration of the fixation in milliseconds or seconds.
--   **Zone**: The zone within the environment where the data was recorded.
-
 ## Repository
 ```text
 root/
 ├── apk/
-│	
+│ ├── VRSI-apk.part1.rar
+│ ├── VRSI-apk.part2.rar
+│ ├── VRSI-apk.part3.rar
+│ ├── VRSI-apk.part4.rar
+│ └── VRSI-apk.part5.rar
 ├── sampleData/
-│	└── com.AIR.VRSI/
-│		└── VRSI/
-|				└── PLAYERS_JSONs/
-│					└──
-│					├── 
-│					└──
-│				└── TestUser/
-│					├── 
-│					│	└──
-│					└──
+│ └── com.AIR.VRSI/
+│ | ├── EyeTrackerData-AOIBigEnvironment.csv
+│ | ├── EyeTrackerData-ProductsBigEnvironment.csv
+│ | ├── HeadHandsDataBigEnvironment.csv
+│ | ├── ProductInteractionDataBigEnvironment.csv
+│ | ├── ProductReleasesBigEnvironment.csv
+│ | ├── ShelvesDataBigEnvironment.csv
+│ | ├── ShoppingCartDataBigEnvironment.csv
+│ | ├── TeleportDataBigEnvironment.csv
+│ | └── TurningsBigEnvironment.csv
+│ └── csv_obtained_from_analysis_tool/
+│ | ├── EyeTrackerData-AOIBigEnvironment_withFixations.csv
+│ | ├── EyeTrackerData-ProductsBigEnvironment_withFixations.csv
+│ | └── HeadHandsDataBigEnvironment_segmented.csv
+│ └── reports/
+│ | ├── VR_SI_Graphics.pdf
+│ | ├── VR_SI_Statistics.pdf
+│ | ├── VR_SI_Statistics_Module_Combined.pdf
+│ | ├── VRSI_Navigation_report.pdf
+│ | └── VRSI_ProductInteraction_report.pdf
+| └── PLAYERS_JSONs/
+│ | ├── ETPlayerData2024-06-11-12-35-58.json
+│ | └── PositionPlayerData2024-06-11-12-35-58.json
 ├── doc/
-│	├── 
-│	└── 
-└── src/
-	├── UnityPackage/
-	│	├──
-	│	└──
-	├── 
-	└── 
+│ ├── HTML-Documentation/
+│ | ├── ...
+│ | └── pages.html (entry point)
+│ ├── Images/
+│ | ├── ...
+│ ├── Architecture.md
+│ └── DeveloperDocumentation.md
+├── src/
+| ├── BehaviorStatistics/
+| │ ├── 3DHeatmap/
+| │ | ├── Colormaps/
+| │ | | ├── Editor/
+| │ | | | ├── Colormaps.gradients
+| │ | | | └── license.md
+| │ | ├── Materials/ └──
+| │ | | └── HeatmapMaterial.mat 
+| │ | ├── Prefabs/
+| │ | | | ├── Colormaps.gradients
+| │ | | | └── HeatmapWithGeneration.prefab
+| │ | ├── Scripts/
+| │ | | | ├── HeatmaptextureGenerator.cs
+| │ | | | ├── HeatmapGenerationInEditor.cs
+| │ | | | ├── Heatmap.cs
+| │ | | | └── GaussWeightComputeShader.compute
+| │ | └── Shader/ 
+| │ | | | └── HeatmapRayMarchingShader.shader
+| ├── Data Collection/
+| │ ├── Prefabs/
+| | | ├── AllDataManagers.prefab
+| | | ├── DIRECTORYMANAGER.prefab
+| | | ├── EYETRACKERMANAGER.prefab
+| | | ├── EyeTracking.prefab
+| | | ├── HEADHANDSMANAGER.prefab
+| | | ├── OBJECTRELEASES.prefab
+| | | ├── PRODUCTINTERACTIONMANAGER.prefab
+| | | ├── SHELVESDATAMANAGER.prefab
+| | | ├── SHOPPINGCARTMANAGER.prefab
+| | | ├── TPTRACKERMANAGER.prefab
+| | | └── TURNERMANAGER.prefab
+| │ ├── Scripts/
+| | | ├── AOILevels.cs
+| | | ├── AOILevelTracker.cs
+| | | ├── DirectoryManager.cs
+| | | ├── EyeInteractable.cs
+| | | ├── EyeTracker.cs
+| | | ├── EyeTrackerDataManager.cs
+| | | ├── EyeTrackerWithAOIs.cs
+| | | ├── AOILevelGTracker.cs
+| | | ├── HeadAndHandsTrackingManager.cs
+| | | ├── HeatMapScreenShooter.cs
+| | | ├── AOILevelGTracker.cs
+| | | ├── ProductInteractionManager.cs
+| | | ├── ProductInteractionTracker.cs
+| | | ├── ShelvesTrackerDataManager.cs
+| | | ├── ShoppingCartTrackerManager.cs
+| | | ├── TeleportDataManager.cs
+| | | ├── TeleportTracking.cs
+| | | └── TurnerTracker.cs
+| ├── Retail Environment Setup/
+| │ ├── Prefabs/
+| │ | ├── ExamplesEnvironment/
+| │ | | ├── OneHandProductWithoutPoses.prefab
+| │ | | ├── Signboard.prefab
+| │ | | └── TwoHandedProductWithPoses.prefab
+| │ | └── UI/
+| │ | | ├── DebugCanvas.prefab
+| │ | | ├── PokeableButtonPanel.prefab
+| │ | | └── ProductInformationCard.prefab
+| │ ├── Scripts/
+| │ | ├── BackgroundMusic.cs
+| │ | ├── ObjectFollowingPlayer.cs
+| │ | ├── StoreInCart.cs
+| │ | └── SwipteItem.cs
+| ├── UnityPackage/
+| │ ├── VRSI-Example.part01.rar
+| │ ├── VRSI-Example.part02.rar
+| │ ├── VRSI-Example.part03.rar
+| │ ├── VRSI-Example.part04.rar
+| │ ├── VRSI-Example.part05.rar
+| │ ├── VRSI-Example.part06.rar
+| │ ├── VRSI-Example.part07.rar
+| │ ├── VRSI-Example.part08.rar
+| │ └── VRSI-Example.part09.rar
+├── LICENSE.md
+└── README.md
 ```
+
 ## Contributors
+Ruben.Grande@uclm.es
+JavierAlonso.Albusac@uclm.es
+David.Vallejo@uclm.es
+Carlos.Gonzalez@uclm.es
+Santiago.Sancez@uclm.es
+JoseJesus.Castro@uclm.es
 
 ## Copyright and license
 Code released under the MIT License.
